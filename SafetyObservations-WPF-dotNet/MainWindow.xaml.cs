@@ -38,6 +38,7 @@ namespace SafetyObservations_WPF_dotNet
         SensorItem oWindSpeed = new SensorItem() { Title = "Wind speed", unit = "m/s", isChecked = false, age = 0, min = 0, max = 0 };
         SensorItem oWindGust = new SensorItem() { Title = "Wind gust", unit = "m/s", isChecked = false, age = 0, min = 0, max = 0 };
 
+        bool isSafeResult = true;
 
         public MainWindow()
         {
@@ -240,10 +241,53 @@ namespace SafetyObservations_WPF_dotNet
                                 oWindGust.isSafe;
 
             colorRect(rectObsCond, isSafeObs);
-    
 
-            bool isSafeResult = isSafeObs && isSafeSafteyMonitor;
+            isSafeResult = isSafeObs && isSafeSafteyMonitor;
             colorRect(rectResult, isSafeResult);
+            BoltwoodFile();
+
+            
+        }
+
+        void BoltwoodFile()
+        {
+            string vbdate = "123";
+            // Write Boltwood file
+            //           10        20        30        40        50        60       
+            //   12345678901234567890123456789012345678901234567890123456789012345678901234567890
+
+            int rainflag=0;
+            if (oRainRate.sValue>0) { rainflag = 1; }
+
+            
+
+            //   2020-09-12 13:02:46 C m -7,3 
+            string boltwood = String.Format("{0,22} {1,1} {2,1} {3,5} {4,5} {5,6} {6,5} {7,2} {8,5} {9,3} {10,1} {11,1} {12,5} {13,11}" +
+                " {14,1} {15,1} {16,1} {17,1} {18,1} {19,1}",
+                DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff"),
+                "C",                            // 1 unit for temp
+                "m",                            // 2 unit for wind 
+                oSkyTemperature.sValue,         // 3 Sky-Ambient
+                oTemperature.sValue,            // 4 ambient temperature
+                0,                               // 5 Sensor case temperature
+                oWindSpeed.valueFormatted,               // 6 Wind spped
+                oHumidity.sValue,               // 7 Humidity
+                oDewPoint.sValue,              // 8 
+                0,                              // 9 Heater settings
+                oRainRate.sValue > 0 ? 1 : 0,                              // 10 rain flag
+                oRainRate.sValue > 0 ? 1 : 0,                              // 11 wet flag
+                0,                              // 12 seconds since last valid data
+                vbdate,                         // 13 datetime
+                0,                              // 14 cloud condition
+                0,                              // 15 wind condition
+                0,                              // 16 rain condition
+                0,                              // 17 daylight condition
+                isSafeResult ? 0 : 1,                              // 18 roof close request
+                isSafeResult ? 0 : 1                               // 19 alert
+                );
+
+            txtBoltwood.Text = "#"+boltwood+"#";
+            //Console.WriteLine(boltwood);
         }
 
         private void colorRect(Rectangle r, bool _isSafe)

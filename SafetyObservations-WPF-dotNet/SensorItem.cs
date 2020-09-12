@@ -28,7 +28,11 @@ namespace SafetyObservations_WPF_dotNet
 
             public double sValue
             {
-                get { return _sValue; }
+                get {
+                    if (this.Title == "Wind speed")
+                        return Math.Abs(_sValue);
+
+                    return _sValue; }
                 set
                 {
                     if (value != _sValue)

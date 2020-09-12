@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SafetyObservations_WPF_dotNet"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="523.409" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="92*"/>
@@ -59,6 +59,7 @@
         <Label Content="Observing Conditions" Grid.Column="1" HorizontalAlignment="Left" Margin="514,62,0,0" VerticalAlignment="Top" Height="26" Width="121"/>
         <Rectangle x:Name="rectResult" Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="61" Margin="602,117,0,0" Stroke="Black" VerticalAlignment="Top" Width="66" RenderTransformOrigin="0.489,0.654"/>
         <Label Content="Overall Result" Grid.Column="1" HorizontalAlignment="Left" Margin="514,117,0,0" VerticalAlignment="Top" Height="26" Width="121"/>
+        <TextBlock x:Name="txtBoltwood" Grid.Column="1" HorizontalAlignment="Left" Margin="10,427,0,0" TextWrapping="Wrap" Text="Boltwood File output..." VerticalAlignment="Top" Width="658" FontFamily="Consolas"/>
 
     </Grid>
 </Window>
