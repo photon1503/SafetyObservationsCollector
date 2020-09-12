@@ -11,9 +11,20 @@
             <ColumnDefinition Width="92*"/>
             <ColumnDefinition Width="701*"/>
         </Grid.ColumnDefinitions>
-        <Button x:Name="btnChooseObserving" Content="Button" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Height="21"/>
-        <ListBox x:Name="lbTodoList" HorizontalContentAlignment="Stretch" 
-                 HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" MinWidth="500" MinHeight="50" RenderTransformOrigin="0.438,0.59" Grid.ColumnSpan="2" Height="366" Width="350" >
+        <Button x:Name="btnChooseObserving" Content="Choose Obs" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click" Height="21"/>
+        <ListBox x:Name="lbTodoList" 
+                 ItemsSource="{Binding items}"
+                 HorizontalContentAlignment="Stretch" 
+                 HorizontalAlignment="Left" Margin="90,10,0,0" VerticalAlignment="Top" 
+                 MinWidth="500" MinHeight="50" RenderTransformOrigin="0.438,0.59" Grid.ColumnSpan="2" Height="398" Width="350" >
+            <ListBox.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform AngleX="0.41"/>
+                    <RotateTransform/>
+                    <TranslateTransform X="1.545"/>
+                </TransformGroup>
+            </ListBox.RenderTransform>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="3,3">
@@ -25,28 +36,29 @@
                             <ColumnDefinition Width="*" MinWidth="50"/>
                             <ColumnDefinition Width="*" MinWidth="50"/>
                             <ColumnDefinition Width="*" MinWidth="50"/>
-                            <ColumnDefinition Width="*" MinWidth="50"/>
-                            <ColumnDefinition Width="*" MinWidth="50"/>
                         </Grid.ColumnDefinitions>
 
                         <TextBlock Text="{Binding Title}" Grid.Column="0" />
-                        <TextBlock Text="{Binding value}" Grid.Column="1" HorizontalAlignment="Right"/>
+                        <TextBlock Text="{Binding valueFormatted}" Grid.Column="1" HorizontalAlignment="Right"/>
                         <TextBlock Text="{Binding unit}" Grid.Column="2"/>
-                        <TextBlock Text="{Binding isSafe}" Grid.Column="4"/>
-                        <Rectangle Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="20" Stroke="Black" VerticalAlignment="Top" Width="30" Grid.Column="5"/>
-                        <CheckBox IsChecked="{Binding isChecked}" HorizontalAlignment="Center" Grid.Column="6"/>
-                        <TextBox Text="{Binding min}" Width="50" TextAlignment="Right" Grid.Column="7" HorizontalAlignment="Right"/>
-                        <TextBox Text="{Binding max}" Width="50" TextAlignment="Right" Grid.Column="8" HorizontalAlignment="Right"/>
+                        <Rectangle Fill="{Binding color}" HorizontalAlignment="Left" Height="15" Stroke="Black" VerticalAlignment="Top" Width="30" Grid.Column="3"/>
+                        <CheckBox Click="CheckBox_Click" IsChecked="{Binding isChecked}" HorizontalAlignment="Center" Grid.Column="4"/>
+                        <TextBox Text="{Binding min}" Width="50" TextAlignment="Right" Grid.Column="5" HorizontalAlignment="Right"/>
+                        <TextBox Text="{Binding max}" Width="50" TextAlignment="Right" Grid.Column="6" HorizontalAlignment="Right"/>
 
 
                     </Grid>
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Content="Button" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1" Height="21"/>
+        <Button Content="Choose Saftey" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1" Height="21"/>
         <Button x:Name="bntStart" Content="Start" HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top" Width="75" Click="bntStart_Click" Height="21"/>
         <Label Content="Safety Monitor" Grid.Column="1" HorizontalAlignment="Left" Margin="546,13,0,0" VerticalAlignment="Top" Height="26" Width="89"/>
         <Rectangle x:Name="rectSafteyMonitor" Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="26" Margin="640,13,0,0" Stroke="Black" VerticalAlignment="Top" Width="28" RenderTransformOrigin="0.489,0.654"/>
+        <Rectangle x:Name="rectObsCond" Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="26" Margin="640,62,0,0" Stroke="Black" VerticalAlignment="Top" Width="28" RenderTransformOrigin="0.489,0.654"/>
+        <Label Content="Observing Conditions" Grid.Column="1" HorizontalAlignment="Left" Margin="514,62,0,0" VerticalAlignment="Top" Height="26" Width="121"/>
+        <Rectangle x:Name="rectResult" Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="61" Margin="602,117,0,0" Stroke="Black" VerticalAlignment="Top" Width="66" RenderTransformOrigin="0.489,0.654"/>
+        <Label Content="Overall Result" Grid.Column="1" HorizontalAlignment="Left" Margin="514,117,0,0" VerticalAlignment="Top" Height="26" Width="121"/>
 
     </Grid>
 </Window>

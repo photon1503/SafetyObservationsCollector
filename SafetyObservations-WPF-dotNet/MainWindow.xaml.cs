@@ -1,22 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using ASCOM.DriverAccess;
+using ASCOM.Utilities;
+
+using System;
+using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Windows.Threading;
-using ASCOM.Utilities;
-using ASCOM.DriverAccess;
-using System.Timers;
-using System.Collections.ObjectModel;
 
 namespace SafetyObservations_WPF_dotNet
 {
@@ -33,20 +23,25 @@ namespace SafetyObservations_WPF_dotNet
         private Profile oProfile;
         private string profileID = "WeatherSafetyCollector";
 
-        ObservableCollection<TodoItem> items = new ObservableCollection<TodoItem>();        
-        TodoItem oCloudCover = new TodoItem() {Title = "CloudCover", unit = "%", isChecked = false, isSafe = false, age = 0, min = 0, max = 0 };
-        TodoItem oDewPoint = new TodoItem() { Title = "DewPoint", unit = "°C", isChecked = false, isSafe = false, age = 0, min = 0, max = 0 };
-        TodoItem oHumidity = new TodoItem() { Title = "Humidity", unit = "%", isChecked = false, isSafe = false, age = 0, min = 0, max = 0 };
-        TodoItem oSkyTemperature = new TodoItem() { Title = "Sky Temperature", unit = "°C", isChecked = false, isSafe = false, age = 0, min = 0, max = 0 };
-        TodoItem oPressure = new TodoItem() { Title = "Pressure", unit = "hPa", isChecked = false, isSafe = false, age = 0, min = 0, max = 0 };
-        TodoItem oRainRate = new TodoItem() { Title = "Rain Rate", unit = "mm/h", isChecked = false, isSafe = false, age = 0, min = 0, max = 0 };
-
+        ObservableCollection<SensorItem> items = new ObservableCollection<SensorItem>();
+        SensorItem oCloudCover = new SensorItem() { Title = "CloudCover", unit = "%", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oDewPoint = new SensorItem() { Title = "DewPoint", unit = "°C", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oHumidity = new SensorItem() { Title = "Humidity", unit = "%", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oSkyTemperature = new SensorItem() { Title = "Sky Temperature", unit = "°C", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oPressure = new SensorItem() { Title = "Pressure", unit = "hPa", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oRainRate = new SensorItem() { Title = "Rain Rate", unit = "mm/h", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oSkyBrightness = new SensorItem() { Title = "Sky Brightness", unit = "lux", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oSkyQuality = new SensorItem() { Title = "Sky Quality", unit = "mag/sq", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oStarFWHM = new SensorItem() { Title = "Star FWHM", unit = "\"", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oTemperature = new SensorItem() { Title = "Temperature", unit = "°C", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oWindDirection = new SensorItem() { Title = "Wind Direction", unit = "°", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oWindSpeed = new SensorItem() { Title = "Wind speed", unit = "m/s", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oWindGust = new SensorItem() { Title = "Wind gust", unit = "m/s", isChecked = false, age = 0, min = 0, max = 0 };
 
 
         public MainWindow()
         {
             InitializeComponent();
-
 
             items.Add(oCloudCover);
             items.Add(oDewPoint);
@@ -54,6 +49,13 @@ namespace SafetyObservations_WPF_dotNet
             items.Add(oSkyTemperature);
             items.Add(oPressure);
             items.Add(oRainRate);
+            items.Add(oSkyBrightness);
+            items.Add(oStarFWHM);
+            items.Add(oSkyQuality);
+            items.Add(oTemperature);
+            items.Add(oWindDirection);
+            items.Add(oWindSpeed);
+            items.Add(oWindGust);
 
             lbTodoList.ItemsSource = items;
 
@@ -65,8 +67,8 @@ namespace SafetyObservations_WPF_dotNet
                 oProfile.Register(profileID, "Weather Safety Collector Profile");
             }
 
-            observingConditionsID = oProfile.GetValue(profileID, "observingsConditionID");            
-            safetyMonitorID = oProfile.GetValue(profileID, "safetyMonitorID");            
+            observingConditionsID = oProfile.GetValue(profileID, "observingsConditionID");
+            safetyMonitorID = oProfile.GetValue(profileID, "safetyMonitorID");
         }
 
 
@@ -79,7 +81,7 @@ namespace SafetyObservations_WPF_dotNet
                 try
                 {
                     oObservingConditions = new ObservingConditions(observingConditionsID) { Connected = true };
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -95,7 +97,7 @@ namespace SafetyObservations_WPF_dotNet
                 try
                 {
                     oSafetyMonitor = new SafetyMonitor(safetyMonitorID) { Connected = true };
-                    
+
                 }
                 catch (Exception ex)
                 {
@@ -139,8 +141,7 @@ namespace SafetyObservations_WPF_dotNet
                 if (ex.InnerException != null)
                     msg += " - " + ex.InnerException.Message;
                 MessageBox.Show(string.Format("Choose failed with error {0}", msg));
-            } 
-            
+            }
         }
 
         private void bntStart_Click(object sender, RoutedEventArgs e)
@@ -152,37 +153,109 @@ namespace SafetyObservations_WPF_dotNet
             timer.Start();
         }
 
-        private  void OnTimedEvent(object sender, EventArgs e)
+        private void OnTimedEvent(object sender, EventArgs e)
         {
             bool isSafeSafteyMonitor = oSafetyMonitor.IsSafe;
-            if (isSafeSafteyMonitor)
-                rectSafteyMonitor.Fill = new SolidColorBrush(System.Windows.Media.Colors.Green);
-        else
-                rectSafteyMonitor.Fill = new SolidColorBrush(System.Windows.Media.Colors.Red);
+            colorRect(rectSafteyMonitor, isSafeSafteyMonitor);
 
+            try
+            {
+                oCloudCover.sValue = oObservingConditions.CloudCover;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex)
+            {
+                items.Remove(oCloudCover);
+            }
+            try
+            {
+                oDewPoint.sValue = oObservingConditions.DewPoint;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex) { items.Remove(oDewPoint); }
+            try
+            {
+                oHumidity.sValue = oObservingConditions.Humidity;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex) { items.Remove(oHumidity); }
+            try
+            {
+                oSkyTemperature.sValue = oObservingConditions.SkyTemperature;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex) { items.Remove(oSkyTemperature); }
+            try
+            {
+                oPressure.sValue = oObservingConditions.Pressure;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex) { items.Remove(oPressure); }
+            try
+            {
+                oRainRate.sValue = oObservingConditions.RainRate;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex) { items.Remove(oRainRate); }
+            try
+            {
+                oSkyBrightness.sValue = oObservingConditions.SkyBrightness;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex) { items.Remove(oSkyBrightness); }
+            try
+            {
+                oStarFWHM.sValue = oObservingConditions.StarFWHM;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex)
+            {
+                items.Remove(oStarFWHM);
+            }
+            try
+            {
+                oTemperature.sValue = oObservingConditions.Temperature;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex) { items.Remove(oTemperature); }
+            try
+            {
+                oWindDirection.sValue = oObservingConditions.WindDirection;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex) { items.Remove(oWindDirection); }
+            try
+            {
+                oWindSpeed.sValue = oObservingConditions.WindSpeed;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex) { items.Remove(oWindSpeed); }
+            try
+            {
+                oWindGust.sValue = oObservingConditions.WindGust;
+            }
+            catch (ASCOM.PropertyNotImplementedException ex) { items.Remove(oWindGust); }
 
-            oCloudCover.value = oObservingConditions.CloudCover;
-            oDewPoint.value = oObservingConditions.DewPoint;
-            oHumidity.value = oObservingConditions.Humidity;
+            bool isSafeObs = oCloudCover.isSafe &&
+                                oDewPoint.isSafe &&
+                                oHumidity.isSafe &&
+                                oSkyTemperature.isSafe &&
+                                oPressure.isSafe &&
+                                oRainRate.isSafe &&
+                                oSkyBrightness.isSafe &&
+                                oStarFWHM.isSafe &&
+                                oSkyQuality.isSafe &&
+                                oTemperature.isSafe &&
+                                oWindDirection.isSafe &&
+                                oWindSpeed.isSafe &&
+                                oWindGust.isSafe;
 
-            //ICollectionView view = CollectionViewSource.GetDefaultView(items);
-            lbTodoList.Items.Refresh();
+            colorRect(rectObsCond, isSafeObs);
+    
 
-
-
-
+            bool isSafeResult = isSafeObs && isSafeSafteyMonitor;
+            colorRect(rectResult, isSafeResult);
         }
 
-        public class TodoItem
+        private void colorRect(Rectangle r, bool _isSafe)
         {
-            public string Title { get; set; }
-            public double value { get; set; }
-            public string unit { get; set; }
-            public bool isChecked { get; set; }
-            public bool isSafe { get; set; }
-            public double age { get; set; }
-            public double min { get; set; }
-            public double max { get; set; }
+            if (_isSafe)
+                r.Fill = new SolidColorBrush(System.Windows.Media.Colors.Green);
+            else
+                r.Fill = new SolidColorBrush(System.Windows.Media.Colors.Red);
+        }
+        private void CheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            //todo
         }
     }
 }
