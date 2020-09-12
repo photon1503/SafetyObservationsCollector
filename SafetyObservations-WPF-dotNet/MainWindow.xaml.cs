@@ -7,6 +7,9 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Shapes;
 using System.Windows.Threading;
+using WinForms = System.Windows.Forms;
+using System.IO;
+
 
 namespace SafetyObservations_WPF_dotNet
 {
@@ -22,6 +25,8 @@ namespace SafetyObservations_WPF_dotNet
         private string safetyMonitorID;
         private Profile oProfile;
         private string profileID = "WeatherSafetyCollector";
+
+        private string myPath; //safeme
 
         ObservableCollection<SensorItem> items = new ObservableCollection<SensorItem>();
         SensorItem oCloudCover = new SensorItem() { Title = "CloudCover", unit = "%", isChecked = false, age = 0, min = 0, max = 0 };
@@ -246,23 +251,18 @@ namespace SafetyObservations_WPF_dotNet
             colorRect(rectResult, isSafeResult);
             BoltwoodFile();
 
-            
+
         }
 
         void BoltwoodFile()
         {
-            string vbdate = "123";
             // Write Boltwood file
-            //           10        20        30        40        50        60       
-            //   12345678901234567890123456789012345678901234567890123456789012345678901234567890
-
-            int rainflag=0;
-            if (oRainRate.sValue>0) { rainflag = 1; }
-
+            // see https://diffractionlimited.com/wp-content/uploads/2016/04/Cloud-SensorII-Users-Manual.pdf
+            //           10        20        30        40        50        60        70        80        90       100   *
+            //   12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234
+            //   2020-09-12 14:58:46.54 C m   -3,9   37,6      0   0,28  -1    100   0 0 0     0  44086,62414 0 0 0 0 1 1
             
-
-            //   2020-09-12 13:02:46 C m -7,3 
-            string boltwood = String.Format("{0,22} {1,1} {2,1} {3,5} {4,5} {5,6} {6,5} {7,2} {8,5} {9,3} {10,1} {11,1} {12,5} {13,11}" +
+            string boltwood = String.Format("{0,22} {1,1} {2,1} {3,6} {4,6} {5,6} {6,6} {7,3} {8,6} {9,3} {10,1} {11,1} {12,5} {13,12}" +
                 " {14,1} {15,1} {16,1} {17,1} {18,1} {19,1}",
                 DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff"),
                 "C",                            // 1 unit for temp
@@ -270,14 +270,14 @@ namespace SafetyObservations_WPF_dotNet
                 oSkyTemperature.sValue,         // 3 Sky-Ambient
                 oTemperature.sValue,            // 4 ambient temperature
                 0,                               // 5 Sensor case temperature
-                oWindSpeed.valueFormatted,               // 6 Wind spped
+                oWindSpeed.valueFormatted,       // 6 Wind spped
                 oHumidity.sValue,               // 7 Humidity
-                oDewPoint.sValue,              // 8 
+                oDewPoint.sValue,              // 8 Dew Point
                 0,                              // 9 Heater settings
                 oRainRate.sValue > 0 ? 1 : 0,                              // 10 rain flag
                 oRainRate.sValue > 0 ? 1 : 0,                              // 11 wet flag
                 0,                              // 12 seconds since last valid data
-                vbdate,                         // 13 datetime
+                DateTime.Now.ToOADate().ToString().Substring(0,11),                         // 13 datetime
                 0,                              // 14 cloud condition
                 0,                              // 15 wind condition
                 0,                              // 16 rain condition
@@ -286,8 +286,9 @@ namespace SafetyObservations_WPF_dotNet
                 isSafeResult ? 0 : 1                               // 19 alert
                 );
 
-            txtBoltwood.Text = "#"+boltwood+"#";
-            //Console.WriteLine(boltwood);
+            txtBoltwood.Text = "#" + boltwood + "#";
+
+            File.WriteAllText(System.IO.Path.Combine(myPath,"soc.dat"), boltwood);
         }
 
         private void colorRect(Rectangle r, bool _isSafe)
@@ -300,6 +301,14 @@ namespace SafetyObservations_WPF_dotNet
         private void CheckBox_Click(object sender, RoutedEventArgs e)
         {
             //todo
+        }
+
+        private void btnSetFile_Click(object sender, RoutedEventArgs e)
+        {
+            var dialog = new System.Windows.Forms.FolderBrowserDialog();
+            dialog.ShowDialog();
+            myPath = dialog.SelectedPath;            
+
         }
     }
 }

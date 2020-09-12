@@ -13,8 +13,6 @@ namespace SafetyObservations_WPF_dotNet
             {
                 if (PropertyChanged != null)
                 {
-
-
                     PropertyChanged(this, new PropertyChangedEventArgs(info));
                 }
             }
