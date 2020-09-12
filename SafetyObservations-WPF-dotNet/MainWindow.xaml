@@ -52,7 +52,7 @@
             </ListBox.ItemTemplate>
         </ListBox>
         <Button Content="Choose Saftey" HorizontalAlignment="Left" Margin="10,36,0,0" VerticalAlignment="Top" Width="75" Click="Button_Click_1" Height="21"/>
-        <Button x:Name="bntStart" Content="Start" HorizontalAlignment="Left" Margin="10,88,0,0" VerticalAlignment="Top" Width="75" Click="bntStart_Click" Height="21"/>
+        <Button x:Name="bntStart" Content="Start" HorizontalAlignment="Left" Margin="10,157,0,0" VerticalAlignment="Top" Width="75" Click="bntStart_Click" Height="21"/>
         <Label Content="Safety Monitor" Grid.Column="1" HorizontalAlignment="Left" Margin="546,13,0,0" VerticalAlignment="Top" Height="26" Width="89"/>
         <Rectangle x:Name="rectSafteyMonitor" Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="26" Margin="640,13,0,0" Stroke="Black" VerticalAlignment="Top" Width="28" RenderTransformOrigin="0.489,0.654"/>
         <Rectangle x:Name="rectObsCond" Grid.Column="1" Fill="#FFF4F4F5" HorizontalAlignment="Left" Height="26" Margin="640,62,0,0" Stroke="Black" VerticalAlignment="Top" Width="28" RenderTransformOrigin="0.489,0.654"/>
@@ -64,7 +64,7 @@
          BorderThickness="0"
          Text="{Binding Text, Mode=OneWay}"
          IsReadOnly="True"
-         TextWrapping="Wrap" RenderTransformOrigin="1.51,0.868" Grid.Column="1" Margin="10,427,24.333,37.333" FontFamily="Consolas" FontSize="10" />
+         TextWrapping="Wrap" RenderTransformOrigin="1.51,0.868" Grid.Column="1" Margin="10,0,23.333,10.333" FontFamily="Consolas" FontSize="10" Height="41" VerticalAlignment="Bottom" />
         <Button x:Name="btnSetFile" Content="Set Path..." HorizontalAlignment="Left" Margin="10,62,0,0" VerticalAlignment="Top" Width="75" Click="btnSetFile_Click"/>
 
     </Grid>

@@ -153,11 +153,14 @@ namespace SafetyObservations_WPF_dotNet
 
         private void bntStart_Click(object sender, RoutedEventArgs e)
         {
+            
             Connect();
             DispatcherTimer timer = new DispatcherTimer();
             timer.Interval = TimeSpan.FromSeconds(1);
             timer.Tick += OnTimedEvent;
             timer.Start();
+
+            bntStart.IsEnabled = false;
         }
 
         private void OnTimedEvent(object sender, EventArgs e)
