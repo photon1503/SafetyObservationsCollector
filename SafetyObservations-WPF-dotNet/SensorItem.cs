@@ -33,6 +33,10 @@ namespace SafetyObservations_WPF_dotNet
             public SensorItem(string _title, string _unit)
             {
                 oProfile = new Profile();
+                if (!oProfile.IsRegistered(profileID))
+                {
+                    oProfile.Register(profileID, "Weather Safety Collector Profile");
+                }
                 Title = _title;
                 unit = _unit;
                 sValue = 999;

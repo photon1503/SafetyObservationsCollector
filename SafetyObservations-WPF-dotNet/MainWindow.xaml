@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:SafetyObservations_WPF_dotNet"
         mc:Ignorable="d"
-        Title="MainWindow" Height="Auto" Width="800">
+        Title="Saftey Observations Collector" Height="Auto" Width="800">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="92*"/>

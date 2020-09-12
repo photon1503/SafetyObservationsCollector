@@ -7,11 +7,11 @@ using System.Windows;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("SafetyObservations-WPF-dotNet")]
+[assembly: AssemblyTitle("SafetyObservationsCollector")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("SafetyObservations-WPF-dotNet")]
+[assembly: AssemblyCompany("Gerald Hitz")]
+[assembly: AssemblyProduct("SafetyObservationsCollector")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
