@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Windows.Media;
+using ASCOM.Utilities;
 
 namespace SafetyObservations_WPF_dotNet
 {
@@ -8,6 +9,8 @@ namespace SafetyObservations_WPF_dotNet
     {
         public class SensorItem : INotifyPropertyChanged
         {
+
+
             public event PropertyChangedEventHandler PropertyChanged;
             private void NotifyPropertyChanged(String info)
             {
@@ -19,18 +22,35 @@ namespace SafetyObservations_WPF_dotNet
 
             public string Title { get; set; }
 
-            public bool isImplemented = true;
+            //public bool isImplemented = true;
             private double _sValue = -999;
             private bool _isSafe = true;
             private bool _isChecked = false;
 
+            private Profile oProfile;
+            private string profileID = "WeatherSafetyCollector";
+
+            public SensorItem(string _title, string _unit)
+            {
+                oProfile = new Profile();
+                Title = _title;
+                unit = _unit;
+                sValue = 999;
+                isChecked = bool.Parse(oProfile.GetValue(profileID, "isChecked", this.Title, "false"));
+                age = 0;
+                min = double.Parse(oProfile.GetValue(profileID, "min", this.Title, "0"));
+                max = double.Parse(oProfile.GetValue(profileID, "max", this.Title, "0"));
+            }
+
             public double sValue
             {
-                get {
+                get
+                {
                     if (this.Title == "Wind speed")
                         return Math.Abs(_sValue);
 
-                    return _sValue; }
+                    return _sValue;
+                }
                 set
                 {
                     if (value != _sValue)
@@ -46,7 +66,7 @@ namespace SafetyObservations_WPF_dotNet
             {
                 get
                 {
-                    return this.sValue.ToString("0.00",System.Globalization.CultureInfo.CreateSpecificCulture("en-us"));
+                    return this.sValue.ToString("0.00", System.Globalization.CultureInfo.CreateSpecificCulture("en-us"));
                 }
                 set { }
             }
@@ -74,6 +94,7 @@ namespace SafetyObservations_WPF_dotNet
                     {
                         _isChecked = value;
                         NotifyPropertyChanged("color");
+                        oProfile.WriteValue(profileID, "isChecked", _isChecked.ToString(), this.Title);
                     }
                 }
             }
@@ -98,9 +119,33 @@ namespace SafetyObservations_WPF_dotNet
             }
             public double age { get; set; }
 
-            public double min { get; set; }
+            private double _min = 0;
+            public double min
+            {
+                get { return _min; }
+                set
+                {
+                    if (_min != value)
+                    {
+                        _min = value;
+                        oProfile.WriteValue(profileID, "min", _min.ToString(), this.Title);
+                    }
+                }
+            }
 
-            public double max { get; set; }
+            private double _max;
+            public double max
+            {
+                get { return _max; }
+                set
+                {
+                    if (_max != value)
+                    {
+                        _max = value;
+                        oProfile.WriteValue(profileID, "max", _max.ToString(), this.Title);
+                    }
+                }
+            }
 
             public Brush color
             {

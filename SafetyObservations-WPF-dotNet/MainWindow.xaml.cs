@@ -29,19 +29,19 @@ namespace SafetyObservations_WPF_dotNet
         private string myPath; //safeme
 
         ObservableCollection<SensorItem> items = new ObservableCollection<SensorItem>();
-        SensorItem oCloudCover = new SensorItem() { Title = "CloudCover", unit = "%", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oDewPoint = new SensorItem() { Title = "DewPoint", unit = "°C", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oHumidity = new SensorItem() { Title = "Humidity", unit = "%", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oSkyTemperature = new SensorItem() { Title = "Sky Temperature", unit = "°C", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oPressure = new SensorItem() { Title = "Pressure", unit = "hPa", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oRainRate = new SensorItem() { Title = "Rain Rate", unit = "mm/h", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oSkyBrightness = new SensorItem() { Title = "Sky Brightness", unit = "lux", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oSkyQuality = new SensorItem() { Title = "Sky Quality", unit = "mag/sq", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oStarFWHM = new SensorItem() { Title = "Star FWHM", unit = "\"", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oTemperature = new SensorItem() { Title = "Temperature", unit = "°C", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oWindDirection = new SensorItem() { Title = "Wind Direction", unit = "°", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oWindSpeed = new SensorItem() { Title = "Wind speed", unit = "m/s", isChecked = false, age = 0, min = 0, max = 0 };
-        SensorItem oWindGust = new SensorItem() { Title = "Wind gust", unit = "m/s", isChecked = false, age = 0, min = 0, max = 0 };
+        SensorItem oCloudCover = new SensorItem("CloudCover", "%");
+        SensorItem oDewPoint = new SensorItem("DewPoint", "°C");
+        SensorItem oHumidity = new SensorItem("Humidity", "%");
+        SensorItem oSkyTemperature = new SensorItem("Sky Temperature", "°C");
+        SensorItem oPressure = new SensorItem("Pressure", "hPa");
+        SensorItem oRainRate = new SensorItem("Rain Rate", "mm/h");
+        SensorItem oSkyBrightness = new SensorItem("Sky Brightness", "lux");
+        SensorItem oSkyQuality = new SensorItem("Sky Quality", "mag/sq");
+        SensorItem oStarFWHM = new SensorItem("Star FWHM", "\"");
+        SensorItem oTemperature = new SensorItem("Temperature", "°C");
+        SensorItem oWindDirection = new SensorItem("Wind Direction", "°");
+        SensorItem oWindSpeed = new SensorItem("Wind speed", "m/s");
+        SensorItem oWindGust = new SensorItem("Wind gust", "m/s");
 
         bool isSafeResult = true;
 
@@ -75,6 +75,7 @@ namespace SafetyObservations_WPF_dotNet
 
             observingConditionsID = oProfile.GetValue(profileID, "observingsConditionID");
             safetyMonitorID = oProfile.GetValue(profileID, "safetyMonitorID");
+            myPath = oProfile.GetValue(profileID, "weatherPath");
         }
 
 
@@ -261,7 +262,7 @@ namespace SafetyObservations_WPF_dotNet
             //           10        20        30        40        50        60        70        80        90       100   *
             //   12345678901234567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234
             //   2020-09-12 14:58:46.54 C m   -3,9   37,6      0   0,28  -1    100   0 0 0     0  44086,62414 0 0 0 0 1 1
-            
+
             string boltwood = String.Format("{0,22} {1,1} {2,1} {3,6} {4,6} {5,6} {6,6} {7,3} {8,6} {9,3} {10,1} {11,1} {12,5} {13,12}" +
                 " {14,1} {15,1} {16,1} {17,1} {18,1} {19,1}",
                 DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff"),
@@ -277,7 +278,7 @@ namespace SafetyObservations_WPF_dotNet
                 oRainRate.sValue > 0 ? 1 : 0,                              // 10 rain flag
                 oRainRate.sValue > 0 ? 1 : 0,                              // 11 wet flag
                 0,                              // 12 seconds since last valid data
-                DateTime.Now.ToOADate().ToString(System.Globalization.CultureInfo.CreateSpecificCulture("en-us")).Substring(0,11),                         // 13 datetime
+                DateTime.Now.ToOADate().ToString(System.Globalization.CultureInfo.CreateSpecificCulture("en-us")).Substring(0, 11),                         // 13 datetime
                 0,                              // 14 cloud condition
                 0,                              // 15 wind condition
                 0,                              // 16 rain condition
@@ -292,7 +293,8 @@ namespace SafetyObservations_WPF_dotNet
             {
                 File.WriteAllText(System.IO.Path.Combine(myPath, "soc-dot.dat"), boltwood);
                 File.WriteAllText(System.IO.Path.Combine(myPath, "soc-comma.dat"), boltwood.Replace('.', ','));
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw new System.InvalidOperationException("Please set folder for weather file first!");
             }
@@ -314,7 +316,8 @@ namespace SafetyObservations_WPF_dotNet
         {
             var dialog = new System.Windows.Forms.FolderBrowserDialog();
             dialog.ShowDialog();
-            myPath = dialog.SelectedPath;            
+            myPath = dialog.SelectedPath;
+            oProfile.WriteValue(profileID, "weatherPath", myPath);
 
         }
     }
