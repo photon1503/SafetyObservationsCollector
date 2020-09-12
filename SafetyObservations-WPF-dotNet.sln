@@ -5,6 +5,12 @@ VisualStudioVersion = 16.0.30503.244
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SafetyObservations-WPF-dotNet", "SafetyObservations-WPF-dotNet\SafetyObservations-WPF-dotNet.csproj", "{7B56FAED-06D6-4C6D-B593-B115769BAC8B}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{118BAC32-C772-4FC5-A10C-F1221D4ED5E2}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+		todo.md = todo.md
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

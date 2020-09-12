@@ -25,6 +25,31 @@
                     <TranslateTransform X="1.545"/>
                 </TransformGroup>
             </ListBox.RenderTransform>
+            <ListBox.Template>
+                <ControlTemplate>
+                    <DockPanel LastChildFill="True">
+                        <Grid DockPanel.Dock="Top" Height="30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" MinWidth="100"/>
+                                <ColumnDefinition Width="*" MinWidth="50"/>
+                                <ColumnDefinition Width="*" MinWidth="50"/>
+                                <ColumnDefinition Width="*" MinWidth="50"/>
+                                <ColumnDefinition Width="*" MinWidth="50"/>
+                                <ColumnDefinition Width="*" MinWidth="50"/>
+                                <ColumnDefinition Width="*" MinWidth="50"/>
+                            </Grid.ColumnDefinitions>
+                            <Label Grid.Column="0">Sensor</Label>
+                            <Label Grid.Column="1" HorizontalAlignment="Right">Value</Label>
+                            <Label Grid.Column="2"></Label>
+                            <Label Grid.Column="3">isSafe</Label>
+                            <Label Grid.Column="4">Check</Label>
+                            <Label Grid.Column="5" HorizontalAlignment="Right">Min</Label>
+                            <Label Grid.Column="6" HorizontalAlignment="Right">Max</Label>
+                        </Grid>
+                        <ItemsPresenter></ItemsPresenter>
+                    </DockPanel>
+                </ControlTemplate>
+            </ListBox.Template>
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid Margin="3,3">
@@ -38,6 +63,8 @@
                             <ColumnDefinition Width="*" MinWidth="50"/>
                         </Grid.ColumnDefinitions>
 
+                        
+                        
                         <TextBlock Text="{Binding Title}" Grid.Column="0" />
                         <TextBlock Text="{Binding valueFormatted}" Grid.Column="1" HorizontalAlignment="Right"/>
                         <TextBlock Text="{Binding unit}" Grid.Column="2"/>
