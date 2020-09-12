@@ -267,17 +267,17 @@ namespace SafetyObservations_WPF_dotNet
                 DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.ff"),
                 "C",                            // 1 unit for temp
                 "m",                            // 2 unit for wind 
-                oSkyTemperature.sValue,         // 3 Sky-Ambient
-                oTemperature.sValue,            // 4 ambient temperature
+                oSkyTemperature.valueEN,         // 3 Sky-Ambient
+                oTemperature.valueEN,            // 4 ambient temperature
                 0,                               // 5 Sensor case temperature
-                oWindSpeed.valueFormatted,       // 6 Wind spped
-                oHumidity.sValue,               // 7 Humidity
-                oDewPoint.sValue,              // 8 Dew Point
+                oWindSpeed.valueEN,       // 6 Wind spped
+                oHumidity.valueEN,               // 7 Humidity
+                oDewPoint.valueEN,              // 8 Dew Point
                 0,                              // 9 Heater settings
                 oRainRate.sValue > 0 ? 1 : 0,                              // 10 rain flag
                 oRainRate.sValue > 0 ? 1 : 0,                              // 11 wet flag
                 0,                              // 12 seconds since last valid data
-                DateTime.Now.ToOADate().ToString().Substring(0,11),                         // 13 datetime
+                DateTime.Now.ToOADate().ToString(System.Globalization.CultureInfo.CreateSpecificCulture("en-us")).Substring(0,11),                         // 13 datetime
                 0,                              // 14 cloud condition
                 0,                              // 15 wind condition
                 0,                              // 16 rain condition
@@ -288,7 +288,14 @@ namespace SafetyObservations_WPF_dotNet
 
             txtBoltwood.Text = "#" + boltwood + "#";
 
-            File.WriteAllText(System.IO.Path.Combine(myPath,"soc.dat"), boltwood);
+            try
+            {
+                File.WriteAllText(System.IO.Path.Combine(myPath, "soc-dot.dat"), boltwood);
+                File.WriteAllText(System.IO.Path.Combine(myPath, "soc-comma.dat"), boltwood.Replace('.', ','));
+            } catch (Exception ex)
+            {
+                throw new System.InvalidOperationException("Please set folder for weather file first!");
+            }
         }
 
         private void colorRect(Rectangle r, bool _isSafe)

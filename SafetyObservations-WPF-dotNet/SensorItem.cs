@@ -42,6 +42,15 @@ namespace SafetyObservations_WPF_dotNet
                 }
             }
 
+            public string valueEN
+            {
+                get
+                {
+                    return this.sValue.ToString("0.00",System.Globalization.CultureInfo.CreateSpecificCulture("en-us"));
+                }
+                set { }
+            }
+
             public string valueFormatted
             {
                 get
